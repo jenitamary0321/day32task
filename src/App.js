@@ -1,23 +1,26 @@
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setCartItems } from './redux/cartSlice';
+import Cart from './components/Cart';
 import './App.css';
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Fetching the local JSON data
+    fetch('/data.json')
+      .then(response => response.json())
+      .then(data => {
+        // Dispatch the action to set cart items
+        dispatch(setCartItems(data));
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  }, [dispatch]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Cart />
     </div>
   );
 }
